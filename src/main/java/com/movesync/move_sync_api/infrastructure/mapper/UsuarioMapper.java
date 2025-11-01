@@ -23,7 +23,7 @@ public class UsuarioMapper {
 
     public static UsuarioResponseDTO toResponse(Usuario entity) {
         return UsuarioResponseDTO.builder()
-                .cedula(entity.getIdUsuario())
+                .cedula(entity.getCedula())
                 .primerNombre(entity.getPrimerNombre())
                 .primerApellido(entity.getPrimerApellido())
                 .correo(entity.getCorreo())
