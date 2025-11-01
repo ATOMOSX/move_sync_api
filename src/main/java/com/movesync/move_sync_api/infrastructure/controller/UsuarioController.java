@@ -8,14 +8,11 @@ import com.movesync.move_sync_api.application.port.interactor.IUsuarioService;
 import com.movesync.move_sync_api.domain.entity.Usuario;
 import com.movesync.move_sync_api.infrastructure.mapper.UsuarioMapper;
 import com.movesync.move_sync_api.infrastructurecross.Constants;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -53,7 +50,7 @@ public class UsuarioController implements IUsuarioController {
 
     @Override
     @PostMapping
-    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> registrarUsuario(UsuarioRequestDTO request) {
+    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> registrarUsuario(@Valid @RequestBody UsuarioRequestDTO request) {
         Usuario usuario = UsuarioMapper.toEntity(request);
         usuarioService.registrarUsuario(usuario);
         UsuarioResponseDTO response = UsuarioMapper.toResponse(usuario);
@@ -61,7 +58,9 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> actualizarUsuario(String id, UsuarioRequestDTO request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> actualizarUsuario(@PathVariable String id,
+                                                                             @Valid @RequestBody UsuarioRequestDTO request) {
         Usuario usuario = UsuarioMapper.toEntity(request);
         usuario.setIdUsuario(id);
         usuarioService.actualizarUsuario(usuario);
@@ -70,7 +69,8 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<Void>> eliminarUsuario(String id) {
+    @GetMapping("/eliminar/{id}")
+    public ResponseEntity<ApiResponse<Void>> eliminarUsuario(@PathVariable String id) {
         usuarioService.eliminarUsuario(id);
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_ELIMINADO, null));
     }
