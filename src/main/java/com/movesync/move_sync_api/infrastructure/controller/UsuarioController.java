@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class UsuarioController implements IUsuarioController {
 
     @Override
     @GetMapping("/{idUsuario}")
-    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorId(String idUsuario) {
+    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorId(@PathVariable String idUsuario) {
         Usuario usuario = usuarioService.obtenerPorId(idUsuario);
         UsuarioResponseDTO response = UsuarioMapper.toResponse(usuario);
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_OBTENIDOS, response));
@@ -44,7 +45,7 @@ public class UsuarioController implements IUsuarioController {
 
     @Override
     @GetMapping("/correo/{correo}")
-    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorCorreo(String correo) {
+    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorCorreo(@PathVariable String correo) {
         Usuario usuario = usuarioService.obtenerPorCorreo(correo);
         UsuarioResponseDTO response = UsuarioMapper.toResponse(usuario);
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_OBTENIDOS, response));
