@@ -3,6 +3,7 @@ package com.movesync.move_sync_api.application.dto.in.usuario;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.movesync.move_sync_api.infrastructurecross.Constants;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -25,10 +26,10 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "La cédula no puede estar vacía")
     private String cedula;
 
-    @NotBlank(message = "El peso no puede estar vacío")
+    @NotNull(message = "El peso no puede estar vacío")
     private Double peso;
 
-    @NotBlank(message = "La estatura no puede estar vacía")
+    @NotNull(message = "La estatura no puede estar vacía")
     private Integer estatura;
 
     @NotBlank(message = "El género no puede estar vacío")
@@ -39,7 +40,7 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "El correo no puede estar vacío")
     private String correo;
 
-    @NotBlank(message = "La fecha de nacimiento no puede estar vacía")
+    @NotNull(message = "La fecha de nacimiento no puede estar vacía")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fechaNacimiento;
 }
