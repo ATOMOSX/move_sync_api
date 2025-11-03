@@ -9,7 +9,6 @@ import com.movesync.move_sync_api.domain.entity.Usuario;
 import com.movesync.move_sync_api.infrastructure.mapper.UsuarioMapper;
 import com.movesync.move_sync_api.infrastructurecross.Constants;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +40,17 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
+    @GetMapping("/cedula/{cedula}")
+    public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorCedula(@PathVariable String cedula) {
+        Usuario usuario = usuarioService.obtenerPorCedula(cedula);
+        UsuarioResponseDTO response = UsuarioMapper.toResponse(usuario);
+        return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_OBTENIDOS, response));
+    }
+
+    @Override
     @GetMapping("/correo/{correo}")
     public ResponseEntity<ApiResponse<UsuarioResponseDTO>> obtenerPorCorreo(@PathVariable String correo) {
+        // Compatibilidad: buscar por cédula utilizando el parámetro proporcionado
         Usuario usuario = usuarioService.obtenerPorCorreo(correo);
         UsuarioResponseDTO response = UsuarioMapper.toResponse(usuario);
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_OBTENIDOS, response));

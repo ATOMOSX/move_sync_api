@@ -9,7 +9,10 @@ public interface IUsuarioService {
 
     Usuario obtenerPorId(String idUsuario);
 
+    // Mantener obtenerPorCorreo por compatibilidad pero delegará a obtenerPorCedula en la implementación
     Usuario obtenerPorCorreo(String correo);
+
+    Usuario obtenerPorCedula(String cedula);
 
     void registrarUsuario(Usuario usuario);
 

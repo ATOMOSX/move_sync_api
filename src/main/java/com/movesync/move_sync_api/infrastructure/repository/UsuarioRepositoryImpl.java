@@ -46,10 +46,10 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     }
 
     @Override
-    public Usuario findByEmail(String email) {
-        String sql = "SELECT * FROM usuario WHERE correo = ?";
+    public Usuario findByCedula(String cedula) {
+        String sql = "SELECT * FROM usuario WHERE cedula = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), email);
+            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), cedula);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

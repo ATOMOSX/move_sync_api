@@ -14,7 +14,7 @@ public class UsuarioRequestDTO {
     @NotBlank(message = "El primer nombre no puede estar vacío")
     private String primerNombre;
 
-    @NotBlank(message = "El segundo nombre no puede estar vacío")
+    //@NotBlank(message = "El segundo nombre no puede estar vacío")
     private String segundoNombre;
 
     @NotBlank(message = "El primer apellido no puede estar vacío")
