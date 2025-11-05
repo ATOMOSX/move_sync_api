@@ -8,6 +8,7 @@ import java.time.LocalDate;
 @Data
 @Builder
 public class UsuarioResponseDTO {
+    private String idUsuario;
     private String cedula;
     private String primerNombre;
     private String primerApellido;

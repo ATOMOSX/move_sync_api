@@ -8,7 +8,7 @@ public interface IUsuarioRepository {
 
     List<Usuario> findAll();
     Usuario findById(String idUsuario);
-    Usuario findByEmail(String email);
+    Usuario findByCedula(String cedula);
     void save(Usuario usuario);
     void update(Usuario usuario);
     void deleteById(String idUsuario);

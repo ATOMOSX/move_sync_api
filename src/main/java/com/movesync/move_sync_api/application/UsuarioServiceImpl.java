@@ -25,8 +25,15 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
+    public Usuario obtenerPorCedula(String cedula) {
+        return usuarioRepository.findByCedula(cedula);
+    }
+
+    @Override
     public Usuario obtenerPorCorreo(String correo) {
-        return usuarioRepository.findByEmail(correo);
+        // Compatibilidad: si piden buscar por correo, lo interpretamos como búsqueda por cédula
+        // (según requisito del usuario). Intentamos buscar por cédula con el valor proporcionado.
+        return usuarioRepository.findByCedula(correo);
     }
 
     @Override
