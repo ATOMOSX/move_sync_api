@@ -53,6 +53,10 @@ public class Usuario {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fechaNacimiento;
 
+    private String idRol;
+
+    private String rolNombre;
+
     public String getNombrecompleto() {
         StringBuilder sb = new StringBuilder();
 

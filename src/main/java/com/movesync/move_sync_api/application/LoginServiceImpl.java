@@ -5,6 +5,7 @@ import com.movesync.move_sync_api.application.port.interactor.ILoginService;
 import com.movesync.move_sync_api.application.port.output.IUsuarioRepository;
 import com.movesync.move_sync_api.domain.entity.Usuario;
 import com.movesync.move_sync_api.infrastructurecross.Constants;
+import com.movesync.move_sync_api.infrastructurecross.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,7 @@ public class LoginServiceImpl implements ILoginService {
                 .idUsuario(usuario1.getIdUsuario())
                 .nombreCompleto(usuario1.getNombrecompleto())
                 .correoElectronico(usuario1.getCorreo())
+                .rol(StringUtils.capitalizeWords(usuario1.getRolNombre()))
                 .build();
     }
 }
