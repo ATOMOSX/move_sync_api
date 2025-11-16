@@ -17,9 +17,9 @@ public class Notificacion {
 
     private String idNotificacion;
 
-    private String mensaje;
-
     private String idUsuario;
+
+    private String mensaje;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fecha;

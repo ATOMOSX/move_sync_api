@@ -18,10 +18,13 @@ public class Evento {
 
     private String idEvento;
 
-    private LocalTime duracion;
+    private String nombre;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATE_TIME_PATTERN)
     private LocalDateTime fecha;
 
-    private String nombre;
+    private LocalTime duracion;
+
+    private Double distancia;
+
 }
