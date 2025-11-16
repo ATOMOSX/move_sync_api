@@ -30,6 +30,13 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.flywaydb:flyway-core'
     implementation 'org.flywaydb:flyway-database-postgresql'
+
+    // PDF Generation
+    implementation 'com.itextpdf:itext7-core:7.2.5'
+
+    // Charts
+    implementation 'org.jfree:jfreechart:1.5.4'
+
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'org.postgresql:postgresql'
