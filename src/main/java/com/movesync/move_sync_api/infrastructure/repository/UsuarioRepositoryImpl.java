@@ -1,6 +1,7 @@
 package com.movesync.move_sync_api.infrastructure.repository;
 
 import com.movesync.move_sync_api.application.port.output.IUsuarioRepository;
+import com.movesync.move_sync_api.domain.entity.Rol;
 import com.movesync.move_sync_api.domain.entity.Usuario;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -128,11 +129,13 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
     @Override
     public Usuario findByUsuarioAndContrasena(String usuario, String contrasena) {
         String sql = """
-                    SELECT * FROM usuario
-                    WHERE (correo = ? OR cedula = ?)
-                      AND contrasena = ?
-                    LIMIT 1
-                """;
+            SELECT u.*, r.nombre AS rol_nombre
+            FROM usuario u
+            JOIN rol r ON u.id_rol = r.id_rol
+            WHERE (u.correo = ? OR u.cedula = ?)
+              AND u.contrasena = ?
+            LIMIT 1
+            """;
 
         try {
             return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), usuario, usuario, contrasena);
@@ -158,6 +161,8 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
                     .contrasena(rs.getString("contrasena"))
                     .correo(rs.getString("correo"))
                     .fechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate())
+                    .idRol(rs.getString("id_rol"))
+                    .rolNombre(rs.getString("rol_nombre"))
                     .build();
         }
     }
