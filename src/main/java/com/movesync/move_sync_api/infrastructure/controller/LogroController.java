@@ -88,7 +88,7 @@ public class LogroController implements ILogroController {
     }
 
     /**
-     * Reporte Simple 5: Logros por Tipo (JSON)
+     * Reporte Simple 2: Logros por Tipo (JSON)
      * GET /api/logros/logros-por-tipo
      */
     @GetMapping("/logros-por-tipo")
@@ -98,7 +98,7 @@ public class LogroController implements ILogroController {
     }
 
     /**
-     * Reporte Simple 5: Logros por Tipo (PDF)
+     * Reporte Simple 2: Logros por Tipo (PDF)
      * GET /api/logros/logros-por-tipo/pdf
      */
     @GetMapping("/logros-por-tipo/pdf")
