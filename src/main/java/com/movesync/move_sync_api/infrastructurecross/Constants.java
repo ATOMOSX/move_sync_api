@@ -13,6 +13,14 @@ public class Constants {
     public static final TimeZone DEFAULT_TIMEZONE = TimeZone.getTimeZone("America/Bogota");
     public static final DateTimeFormatter DATE_FORMATTER = DateTimeFormatter.ofPattern(DATA_PATTERN);
 
+    // Formato contraseña
+    public static final String PASSWORD_REGEX =
+            "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[!@#$%^&*()_+\\-={}\\[\\]:;\"'<>,.?/]).{8,}$";
+
+    public static final String PASSWORD_MESSAGE =
+            "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial.";
+
+
     public static final DateTimeFormatter DATETIME_FORMATTER = DateTimeFormatter.ofPattern(DATE_TIME_PATTERN);
 
     // Mensajeria endpoints - Usuario
@@ -42,8 +50,13 @@ public class Constants {
     public static final String EVENTO_ACTUALIZADO = "Evento actualizado correctamente.";
     public static final String EVENTO_ELIMINADO = "Evento eliminado correctamente.";
 
+    // Mensajeria endpoints - Login
+    public static final String LOGIN_EXITOSO = "Inicio de sesión exitoso.";
+
+
     // Errores
     public static final String ERROR_FORMATO_FECHA = "Formato de fecha inválido. Se espera dd/MM/yyyy";
     public static final String ERROR_FORMATO_FECHA_HORA = "Formato de fecha y hora inválido. Se espera dd/MM/yyyy HH:mm:ss";
-
+    public static final String ERROR_USUARIO_NO_ENCONTRADO = "Usuario no encontrado.";
+    public static final String INVALID_CREDENTIALS_MESSAGE = "Credenciales inválidas.";
 }

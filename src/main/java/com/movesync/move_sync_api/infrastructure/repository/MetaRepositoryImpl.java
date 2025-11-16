@@ -95,7 +95,7 @@ public class MetaRepositoryImpl implements IMetaRepository {
                     .fechaInicio(rs.getDate("fecha_inicio").toLocalDate())
                     .fechaFin(rs.getDate("fecha_fin").toLocalDate())
                     .objetivo(rs.getString("objetivo"))
-                    .perdidaCaloriasDiarias(rs.getString("perdida_calorias_diarias"))
+                    .perdidaCaloriasDiarias(Double.valueOf(rs.getString("perdida_calorias_diarias")))
                     .build();
         }
     }

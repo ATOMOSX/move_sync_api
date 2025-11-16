@@ -77,7 +77,7 @@ public class UsuarioController implements IUsuarioController {
     }
 
     @Override
-    @GetMapping("/eliminar/{id}")
+    @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<ApiResponse<Void>> eliminarUsuario(@PathVariable String id) {
         usuarioService.eliminarUsuario(id);
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_ELIMINADO, null));
