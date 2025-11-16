@@ -3,16 +3,23 @@ package com.movesync.move_sync_api.infrastructure.controller;
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.logro.LogroRequestDTO;
 import com.movesync.move_sync_api.application.dto.out.logro.LogroResponseDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.LogrosPorTipoDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.application.port.input.ILogroController;
 import com.movesync.move_sync_api.application.port.interactor.ILogroService;
+import com.movesync.move_sync_api.application.port.interactor.IReporteService;
 import com.movesync.move_sync_api.domain.entity.Logro;
 import com.movesync.move_sync_api.infrastructure.mapper.LogroMapper;
 import com.movesync.move_sync_api.infrastructurecross.Constants;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -21,6 +28,9 @@ public class LogroController implements ILogroController {
 
     @Autowired
     private ILogroService logroService;
+
+    @Autowired
+    private IReporteService reporteService;
 
     @Override
     @GetMapping
@@ -62,7 +72,7 @@ public class LogroController implements ILogroController {
     @Override
     @PutMapping("/{id}")
     public ResponseEntity<ApiResponse<LogroResponseDTO>> actualizarLogro(@PathVariable String id,
-                                                                          @Valid @RequestBody LogroRequestDTO request) {
+                                                                         @Valid @RequestBody LogroRequestDTO request) {
         Logro logro = LogroMapper.toEntity(request);
         logro.setIdLogro(id);
         logroService.actualizarLogro(logro);
@@ -75,5 +85,38 @@ public class LogroController implements ILogroController {
     public ResponseEntity<ApiResponse<Void>> eliminarLogro(@PathVariable String id) {
         logroService.eliminarLogro(id);
         return ResponseEntity.ok(ApiResponse.success(Constants.LOGRO_ELIMINADO, null));
+    }
+
+    /**
+     * Reporte Simple 5: Logros por Tipo (JSON)
+     * GET /api/logros/logros-por-tipo
+     */
+    @GetMapping("/logros-por-tipo")
+    public ResponseEntity<ApiResponse<ReporteResponseDTO<LogrosPorTipoDTO>>> obtenerReporteLogrosPorTipo() {
+        ReporteResponseDTO<LogrosPorTipoDTO> reporte = reporteService.obtenerReporteLogrosPorTipo();
+        return ResponseEntity.ok(ApiResponse.success("Reporte generado correctamente", reporte));
+    }
+
+    /**
+     * Reporte Simple 5: Logros por Tipo (PDF)
+     * GET /api/logros/logros-por-tipo/pdf
+     */
+    @GetMapping("/logros-por-tipo/pdf")
+    public ResponseEntity<byte[]> descargarPdfLogrosPorTipo() {
+        byte[] pdfBytes = reporteService.generarPdfLogrosPorTipo();
+
+        String fileName = "reporte_logros_por_tipo_" +
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) +
+                ".pdf";
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", fileName);
+        headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .body(pdfBytes);
     }
 }

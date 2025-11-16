@@ -5,6 +5,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.movesync.move_sync_api.application.dto.out.reporte.EstadisticaDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.LogrosPorTipoDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.UsuariosPorGeneroDTO;
 import com.movesync.move_sync_api.application.port.interactor.IReporteService;
@@ -106,6 +107,110 @@ public class ReporteServiceImpl implements IReporteService {
             // Datos
             for (UsuariosPorGeneroDTO dato : reporte.getDatos()) {
                 table.addCell(PdfUtils.createDataCell(dato.getDescripcionGenero()));
+                table.addCell(PdfUtils.createDataCell(String.valueOf(dato.getCantidad())));
+                table.addCell(PdfUtils.createDataCell(String.format("%.2f%%", dato.getPorcentaje())));
+            }
+            
+            // Total
+            table.addCell(new Cell().add(new Paragraph("TOTAL").setBold())
+                    .setBackgroundColor(com.itextpdf.kernel.colors.ColorConstants.LIGHT_GRAY));
+            table.addCell(new Cell().add(new Paragraph(String.valueOf(reporte.getTotalRegistros())).setBold())
+                    .setBackgroundColor(com.itextpdf.kernel.colors.ColorConstants.LIGHT_GRAY));
+            table.addCell(new Cell().add(new Paragraph("100.00%").setBold())
+                    .setBackgroundColor(com.itextpdf.kernel.colors.ColorConstants.LIGHT_GRAY));
+            
+            document.add(table);
+            
+            // Cerrar documento
+            document.close();
+            
+            return baos.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error al generar PDF: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ReporteResponseDTO<LogrosPorTipoDTO> obtenerReporteLogrosPorTipo() {
+        List<LogrosPorTipoDTO> datos = reporteRepository.obtenerLogrosPorTipo();
+        
+        // Calcular total
+        long total = datos.stream()
+                .mapToLong(LogrosPorTipoDTO::getCantidad)
+                .sum();
+
+        // Crear estadísticas
+        List<EstadisticaDTO> estadisticas = datos.stream()
+                .map(d -> EstadisticaDTO.builder()
+                        .etiqueta(d.getTipo())
+                        .cantidad(d.getCantidad())
+                        .porcentaje(d.getPorcentaje())
+                        .build())
+                .collect(Collectors.toList());
+
+        return ReporteResponseDTO.<LogrosPorTipoDTO>builder()
+                .titulo("Total de Logros por Tipo")
+                .descripcion("Reporte estadístico que muestra la distribución de logros registrados según su tipo")
+                .fechaGeneracion(LocalDateTime.now())
+                .totalRegistros(total)
+                .datos(datos)
+                .estadisticas(estadisticas)
+                .build();
+    }
+
+    @Override
+    public byte[] generarPdfLogrosPorTipo() {
+        try (ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
+            Document document = PdfUtils.createDocument(baos);
+            
+            // Obtener datos
+            ReporteResponseDTO<LogrosPorTipoDTO> reporte = obtenerReporteLogrosPorTipo();
+            
+            // Agregar encabezado
+            PdfUtils.addHeader(document, reporte.getTitulo(), reporte.getDescripcion());
+            
+            // Agregar resumen
+            PdfUtils.addSummary(document, "Total de Logros", String.valueOf(reporte.getTotalRegistros()));
+            PdfUtils.addSpacer(document);
+            
+            // Crear gráfico de barras
+            Map<String, Number> chartData = reporte.getDatos().stream()
+                    .collect(Collectors.toMap(
+                            LogrosPorTipoDTO::getTipo,
+                            LogrosPorTipoDTO::getCantidad,
+                            (a, b) -> a,
+                            LinkedHashMap::new
+                    ));
+            
+            JFreeChart barChart = ChartUtils.createBarChart(
+                    "Distribución de Logros por Tipo",
+                    "Tipo de Logro",
+                    "Cantidad",
+                    chartData
+            );
+            
+            // Agregar gráfico al PDF
+            PdfUtils.addChart(document, barChart, 500, 400);
+            PdfUtils.addSpacer(document);
+            
+            // Agregar tabla de datos
+            document.add(new Paragraph("Detalle Estadístico")
+                    .setBold()
+                    .setFontSize(14)
+                    .setMarginTop(20)
+                    .setMarginBottom(10));
+            
+            Table table = PdfUtils.createStyledTable(new float[]{3, 2, 2});
+            
+            // Encabezados
+            table.addHeaderCell(PdfUtils.createHeaderCell("Tipo de Logro"));
+            table.addHeaderCell(PdfUtils.createHeaderCell("Cantidad"));
+            table.addHeaderCell(PdfUtils.createHeaderCell("Porcentaje"));
+            
+            // Datos
+            for (LogrosPorTipoDTO dato : reporte.getDatos()) {
+                table.addCell(PdfUtils.createDataCell(dato.getTipo()));
                 table.addCell(PdfUtils.createDataCell(String.valueOf(dato.getCantidad())));
                 table.addCell(PdfUtils.createDataCell(String.format("%.2f%%", dato.getPorcentaje())));
             }
