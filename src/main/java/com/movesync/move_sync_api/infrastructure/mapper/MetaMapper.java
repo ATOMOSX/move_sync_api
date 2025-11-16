@@ -10,7 +10,7 @@ public class MetaMapper {
                 .fechaInicio(dto.getFechaInicio())
                 .fechaFin(dto.getFechaFin())
                 .objetivo(dto.getObjetivo())
-                .perdidaCaloriasDiarias(dto.getPerdidaCaloriasDiarias())
+                .perdidaCaloriasDiarias(Double.valueOf(dto.getPerdidaCaloriasDiarias()))
                 .build();
     }
 
@@ -20,7 +20,7 @@ public class MetaMapper {
                 .fechaInicio(entity.getFechaInicio())
                 .fechaFin(entity.getFechaFin())
                 .objetivo(entity.getObjetivo())
-                .perdidaCaloriasDiarias(entity.getPerdidaCaloriasDiarias())
+                .perdidaCaloriasDiarias(String.valueOf(entity.getPerdidaCaloriasDiarias()))
                 .build();
     }
 }

@@ -12,4 +12,5 @@ public interface IUsuarioRepository {
     void save(Usuario usuario);
     void update(Usuario usuario);
     void deleteById(String idUsuario);
+    Usuario findByUsuarioAndContrasena(String usuario, String password);
 }

@@ -125,6 +125,23 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
         jdbcTemplate.update(sql, idUsuario);
     }
 
+    @Override
+    public Usuario findByUsuarioAndContrasena(String usuario, String contrasena) {
+        String sql = """
+                    SELECT * FROM usuario
+                    WHERE (correo = ? OR cedula = ?)
+                      AND contrasena = ?
+                    LIMIT 1
+                """;
+
+        try {
+            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), usuario, usuario, contrasena);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static class UsuarioRowMapper implements RowMapper<Usuario> {
         @Override
         public Usuario mapRow(ResultSet rs, int rowNum) throws SQLException {

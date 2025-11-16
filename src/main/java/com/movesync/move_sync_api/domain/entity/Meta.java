@@ -17,6 +17,9 @@ public class Meta {
 
     private String idMeta;
 
+    private String idUsuario;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fechaInicio;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
@@ -24,5 +27,5 @@ public class Meta {
 
     private String objetivo;
 
-    private String perdidaCaloriasDiarias;
+    private Double perdidaCaloriasDiarias;
 }

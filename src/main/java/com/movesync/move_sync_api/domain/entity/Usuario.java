@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
+import com.movesync.move_sync_api.infrastructurecross.Constants;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -49,23 +50,18 @@ public class Usuario {
     private String correo;
 
     @NotNull
-    @Past
-    @JsonFormat(pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fechaNacimiento;
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Recomendacion> recomendaciones;
+    public String getNombrecompleto() {
+        StringBuilder sb = new StringBuilder();
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<PerfilSalud> perfilesSalud;
+        if (primerNombre != null) sb.append(primerNombre).append(" ");
+        if (segundoNombre != null && !segundoNombre.isBlank()) sb.append(segundoNombre).append(" ");
+        if (primerApellido != null) sb.append(primerApellido).append(" ");
+        if (segundoApellido != null && !segundoApellido.isBlank()) sb.append(segundoApellido);
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Notificacion> notificaciones;
+        return sb.toString().trim();
+    }
 
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private List<Logro> logros;
 }
