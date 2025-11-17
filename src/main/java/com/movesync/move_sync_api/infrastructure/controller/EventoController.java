@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.infrastructure.controller;
 
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.evento.EventoRequestDTO;
+import com.movesync.move_sync_api.application.dto.out.evento.EventoEstadisticasDTO;
 import com.movesync.move_sync_api.application.dto.out.evento.EventoResponseDTO;
 import com.movesync.move_sync_api.application.port.input.IEventoController;
 import com.movesync.move_sync_api.application.port.interactor.IEventoService;
@@ -65,5 +66,13 @@ public class EventoController implements IEventoController {
     public ResponseEntity<ApiResponse<Void>> eliminarEvento(@PathVariable String id) {
         eventoService.eliminarEvento(id);
         return ResponseEntity.ok(ApiResponse.success(Constants.EVENTO_ELIMINADO, null));
+    }
+
+    @Override
+    @GetMapping("/estadisticas")
+    public ResponseEntity<ApiResponse<List<EventoEstadisticasDTO>>> obtenerEstadisticasEventos() {
+        return ResponseEntity.ok(
+                ApiResponse.success(Constants.EVENTO_ESTADISTICAS_OBTENIDAS, eventoService.obtenerEstadisticasEventos())
+        );
     }
 }

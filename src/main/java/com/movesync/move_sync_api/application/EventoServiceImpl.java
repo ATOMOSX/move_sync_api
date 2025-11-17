@@ -1,5 +1,6 @@
 package com.movesync.move_sync_api.application;
 
+import com.movesync.move_sync_api.application.dto.out.evento.EventoEstadisticasDTO;
 import com.movesync.move_sync_api.application.port.interactor.IEventoService;
 import com.movesync.move_sync_api.application.port.output.IEventoRepository;
 import com.movesync.move_sync_api.domain.entity.Evento;
@@ -39,6 +40,11 @@ public class EventoServiceImpl implements IEventoService {
     @Override
     public void eliminarEvento(String idEvento) {
         eventoRepository.deleteById(idEvento);
+    }
+
+    @Override
+    public List<EventoEstadisticasDTO> obtenerEstadisticasEventos() {
+        return eventoRepository.obtenerEstadisticasEventos();
     }
 
     private void validarEvento(Evento evento) {

@@ -4,6 +4,7 @@ import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.usuario.UsuarioRequestDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.UsuariosPorGeneroDTO;
+import com.movesync.move_sync_api.application.dto.out.usuario.UsuarioReporteAvanzadoDTO;
 import com.movesync.move_sync_api.application.dto.out.usuario.UsuarioResponseDTO;
 import com.movesync.move_sync_api.application.port.input.IUsuarioController;
 import com.movesync.move_sync_api.application.port.interactor.IReporteService;
@@ -28,6 +29,9 @@ public class UsuarioController implements IUsuarioController {
 
     @Autowired
     private IUsuarioService usuarioService;
+    @Autowired
+    private IReporteService reporteService;
+
     @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<UsuarioResponseDTO>>> listarUsuarios() {
@@ -90,23 +94,20 @@ public class UsuarioController implements IUsuarioController {
         return ResponseEntity.ok(ApiResponse.success(Constants.USUARIO_ELIMINADO, null));
     }
 
-    @Autowired
-    private IReporteService reporteService;
+    @Override
+    @GetMapping("/reporte-avanzado")
+    public ResponseEntity<ApiResponse<List<UsuarioReporteAvanzadoDTO>>> obtenerReporte() {
+        return ResponseEntity.ok(
+                ApiResponse.success(Constants.USUARIO_REPORTE_AVANZADO_GENERADO, usuarioService.obtenerReporteAvanzado())
+        );
+    }
 
-    /**
-     * Reporte Simple 1: Usuarios por Género (JSON)
-     * GET /api/reportes/usuarios-por-genero
-     */
     @GetMapping("/usuarios-por-genero")
     public ResponseEntity<ApiResponse<ReporteResponseDTO<UsuariosPorGeneroDTO>>> obtenerReporteUsuariosPorGenero() {
         ReporteResponseDTO<UsuariosPorGeneroDTO> reporte = reporteService.obtenerReporteUsuariosPorGenero();
-        return ResponseEntity.ok(ApiResponse.success("Reporte generado correctamente", reporte));
+        return ResponseEntity.ok(ApiResponse.success(Constants.REPORTE_GENERADO_OK, reporte));
     }
 
-    /**
-     * Reporte Simple 1: Usuarios por Género (PDF)
-     * GET /api/reportes/usuarios-por-genero/pdf
-     */
     @GetMapping("/usuarios-por-genero/pdf")
     public ResponseEntity<byte[]> descargarPdfUsuariosPorGenero() {
         byte[] pdfBytes = reporteService.generarPdfUsuariosPorGenero();

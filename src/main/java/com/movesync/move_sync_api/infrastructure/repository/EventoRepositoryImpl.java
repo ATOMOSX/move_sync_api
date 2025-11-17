@@ -1,7 +1,9 @@
 package com.movesync.move_sync_api.infrastructure.repository;
 
+import com.movesync.move_sync_api.application.dto.out.evento.EventoEstadisticasDTO;
 import com.movesync.move_sync_api.application.port.output.IEventoRepository;
 import com.movesync.move_sync_api.domain.entity.Evento;
+import com.movesync.move_sync_api.infrastructure.mapper.EventoEstadisticasRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -85,6 +87,68 @@ public class EventoRepositoryImpl implements IEventoRepository {
 
         String sql = "DELETE FROM evento WHERE id_evento = ?";
         jdbcTemplate.update(sql, idEvento);
+    }
+
+    @Override
+    public List<EventoEstadisticasDTO> obtenerEstadisticasEventos() {
+        String sql = """
+                SELECT 
+                    e.id_evento,
+                    e.nombre AS evento,
+                    e.fecha,
+
+                    (
+                        SELECT a2.nombre
+                        FROM actividad a2
+                        JOIN registro_actividad ra2 ON ra2.id_actividad = a2.id_actividad
+                        WHERE ra2.id_evento = e.id_evento
+                        GROUP BY a2.nombre
+                        ORDER BY COUNT(*) DESC
+                        LIMIT 1
+                    ) AS actividad_mas_realizada,
+
+                    (
+                        SELECT SUM(ra3.perdida_calorias_alcanzadas)
+                        FROM registro_actividad ra3
+                        WHERE ra3.id_evento = e.id_evento
+                    ) AS total_calorias,
+
+                    (
+                        SELECT AVG(ra4.perdida_calorias_alcanzadas)
+                        FROM registro_actividad ra4
+                        WHERE ra4.id_evento = e.id_evento
+                    ) AS promedio_calorias,
+
+                    (
+                        SELECT MAX(ra5.perdida_calorias_alcanzadas)
+                        FROM registro_actividad ra5
+                        WHERE ra5.id_evento = e.id_evento
+                    ) AS maximo_individual,
+
+                    (
+                        SELECT u.primer_nombre || ' ' || u.primer_apellido
+                        FROM usuario u
+                        JOIN registro_actividad ra6 ON ra6.id_usuario = u.id_usuario
+                        WHERE ra6.id_evento = e.id_evento
+                        GROUP BY u.id_usuario
+                        ORDER BY SUM(ra6.perdida_calorias_alcanzadas) DESC
+                        LIMIT 1
+                    ) AS usuario_top,
+
+                    (
+                        SELECT 
+                            (SELECT AVG(perdida_calorias_alcanzadas) FROM registro_actividad)
+                            -
+                            (SELECT AVG(perdida_calorias_alcanzadas) 
+                             FROM registro_actividad 
+                             WHERE id_evento = e.id_evento)
+                    ) AS diferencia_promedio
+
+                FROM evento e
+                ORDER BY total_calorias DESC
+                """;
+
+        return jdbcTemplate.query(sql, new EventoEstadisticasRowMapper());
     }
 
     private static class EventoRowMapper implements RowMapper<Evento> {

@@ -5,6 +5,7 @@ import com.itextpdf.layout.element.Cell;
 import com.itextpdf.layout.element.Paragraph;
 import com.itextpdf.layout.element.Table;
 import com.movesync.move_sync_api.application.dto.out.reporte.EstadisticaDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.ReporteCategoriaTopDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.LogrosPorTipoDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.UsuariosPorGeneroDTO;
@@ -129,6 +130,11 @@ public class ReporteServiceImpl implements IReporteService {
             e.printStackTrace();
             throw new RuntimeException("Error al generar PDF: " + e.getMessage());
         }
+    }
+
+    @Override
+    public ReporteCategoriaTopDTO obtenerReporte() {
+        return reporteRepository.obtenerReporteCategoriaTop();
     }
 
     @Override
