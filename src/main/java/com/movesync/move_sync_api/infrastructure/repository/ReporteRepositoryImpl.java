@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.infrastructure.repository;
 
 import com.movesync.move_sync_api.application.dto.out.reporte.ReporteCategoriaTopDTO;
 import com.movesync.move_sync_api.application.dto.out.reporte.UsuariosPorGeneroDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.LogrosPorTipoDTO;
 import com.movesync.move_sync_api.application.port.output.IReporteRepository;
 import com.movesync.move_sync_api.infrastructure.mapper.ReporteCategoriaTopMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -154,6 +155,37 @@ public class ReporteRepositoryImpl implements IReporteRepository {
             return UsuariosPorGeneroDTO.builder()
                     .genero(rs.getString("genero"))
                     .descripcionGenero(rs.getString("descripcion_genero"))
+                    .cantidad(rs.getLong("cantidad"))
+                    .porcentaje(rs.getDouble("porcentaje"))
+                    .build();
+        }
+    }
+
+    @Override
+    public List<LogrosPorTipoDTO> obtenerLogrosPorTipo() {
+        String sql = """
+                SELECT 
+                    tipo,
+                    COUNT(*) as cantidad,
+                    ROUND(COUNT(*) * 100.0 / (SELECT COUNT(*) FROM logro), 2) as porcentaje
+                FROM logro
+                GROUP BY tipo
+                ORDER BY cantidad DESC
+                """;
+        
+        try {
+            return jdbcTemplate.query(sql, new LogrosPorTipoRowMapper());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return List.of();
+        }
+    }
+
+    private static class LogrosPorTipoRowMapper implements RowMapper<LogrosPorTipoDTO> {
+        @Override
+        public LogrosPorTipoDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+            return LogrosPorTipoDTO.builder()
+                    .tipo(rs.getString("tipo"))
                     .cantidad(rs.getLong("cantidad"))
                     .porcentaje(rs.getDouble("porcentaje"))
                     .build();
