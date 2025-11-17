@@ -1,5 +1,6 @@
 package com.movesync.move_sync_api.application.port.output;
 
+import com.movesync.move_sync_api.application.dto.out.evento.EventoEstadisticasDTO;
 import com.movesync.move_sync_api.domain.entity.Evento;
 
 import java.util.List;
@@ -10,4 +11,5 @@ public interface IEventoRepository {
     void save(Evento evento);
     void update(Evento evento);
     void deleteById(String idEvento);
+    List<EventoEstadisticasDTO> obtenerEstadisticasEventos();
 }

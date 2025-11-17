@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.application.port.input;
 
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.evento.EventoRequestDTO;
+import com.movesync.move_sync_api.application.dto.out.evento.EventoEstadisticasDTO;
 import com.movesync.move_sync_api.application.dto.out.evento.EventoResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -16,4 +17,5 @@ public interface IEventoController {
     ResponseEntity<ApiResponse<EventoResponseDTO>> registrarEvento(@Valid @RequestBody EventoRequestDTO request);
     ResponseEntity<ApiResponse<EventoResponseDTO>> actualizarEvento(@PathVariable String id, @Valid @RequestBody EventoRequestDTO request);
     ResponseEntity<ApiResponse<Void>> eliminarEvento(@PathVariable String id);
+    ResponseEntity<ApiResponse<List<EventoEstadisticasDTO>>> obtenerEstadisticasEventos();
 }

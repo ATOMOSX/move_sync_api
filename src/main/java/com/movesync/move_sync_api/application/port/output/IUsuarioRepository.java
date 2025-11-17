@@ -1,5 +1,6 @@
 package com.movesync.move_sync_api.application.port.output;
 
+import com.movesync.move_sync_api.application.dto.out.usuario.UsuarioReporteAvanzadoDTO;
 import com.movesync.move_sync_api.domain.entity.Usuario;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface IUsuarioRepository {
     void update(Usuario usuario);
     void deleteById(String idUsuario);
     Usuario findByUsuarioAndContrasena(String usuario, String password);
+    List<UsuarioReporteAvanzadoDTO> obtenerReporteAvanzadoUsuarios();
 }

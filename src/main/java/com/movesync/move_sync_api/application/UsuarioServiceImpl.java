@@ -1,5 +1,6 @@
 package com.movesync.move_sync_api.application;
 
+import com.movesync.move_sync_api.application.dto.out.usuario.UsuarioReporteAvanzadoDTO;
 import com.movesync.move_sync_api.application.port.interactor.IUsuarioService;
 import com.movesync.move_sync_api.application.port.output.IUsuarioRepository;
 import com.movesync.move_sync_api.domain.entity.Usuario;
@@ -46,6 +47,11 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public void actualizarUsuario(Usuario usuario) {
         validarUsuario(usuario);
         usuarioRepository.update(usuario);
+    }
+
+    @Override
+    public List<UsuarioReporteAvanzadoDTO> obtenerReporteAvanzado() {
+        return usuarioRepository.obtenerReporteAvanzadoUsuarios();
     }
 
     @Override

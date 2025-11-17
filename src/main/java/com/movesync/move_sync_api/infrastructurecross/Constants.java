@@ -28,6 +28,8 @@ public class Constants {
     public static final String USUARIO_REGISTRADO = "Usuario registrado correctamente.";
     public static final String USUARIO_ACTUALIZADO = "Usuario actualizado correctamente.";
     public static final String USUARIO_ELIMINADO = "Usuario eliminado correctamente.";
+    public static final String USUARIO_REPORTE_AVANZADO_GENERADO = "Reporte avanzado de usuarios generado correctamente.";
+    public static final String REPORTE_GENERADO_OK = "Reporte generado correctamente.";
 
     // Mensajeria endpoints - Meta
     public static final String META_OBTENIDAS = "Metas obtenidas correctamente.";
@@ -51,6 +53,7 @@ public class Constants {
     public static final String EVENTO_REGISTRADO = "Evento registrado correctamente.";
     public static final String EVENTO_ACTUALIZADO = "Evento actualizado correctamente.";
     public static final String EVENTO_ELIMINADO = "Evento eliminado correctamente.";
+    public static final String EVENTO_ESTADISTICAS_OBTENIDAS = "Estadísticas de eventos obtenidas correctamente.";
 
     // Mensajeria endpoints - Login
     public static final String LOGIN_EXITOSO = "Inicio de sesión exitoso.";
