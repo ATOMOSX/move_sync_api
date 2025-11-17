@@ -53,6 +53,9 @@ public class Constants {
     // Mensajeria endpoints - Login
     public static final String LOGIN_EXITOSO = "Inicio de sesión exitoso.";
 
+    // Mensajeria endpoints - Registro de Actividad
+    public static final String REGISTRO_ACTIVIDAD_OBTENIDOS = "Registros de actividad obtenidos correctamente.";
+
     // Mensajeria endpoints - Reportes
     public static final String REPORTE_GENERADO = "Reporte generado correctamente.";
     public static final String REPORTE_PDF_GENERADO = "PDF del reporte generado correctamente.";
