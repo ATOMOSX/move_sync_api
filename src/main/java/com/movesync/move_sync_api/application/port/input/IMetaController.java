@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.application.port.input;
 
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.meta.MetaRequestDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -16,4 +17,5 @@ public interface IMetaController {
     ResponseEntity<ApiResponse<MetaResponseDTO>> registrarMeta(@Valid @RequestBody MetaRequestDTO request);
     ResponseEntity<ApiResponse<MetaResponseDTO>> actualizarMeta(@PathVariable String id, @Valid @RequestBody MetaRequestDTO request);
     ResponseEntity<ApiResponse<Void>> eliminarMeta(@PathVariable String id);
+    ResponseEntity<ApiResponse<List<MetaReporteDTO>>> obtenerReporte(@PathVariable String idUsuario);
 }

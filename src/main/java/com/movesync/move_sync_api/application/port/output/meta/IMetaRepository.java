@@ -1,4 +1,4 @@
-package com.movesync.move_sync_api.application.port.output;
+package com.movesync.move_sync_api.application.port.output.meta;
 
 import com.movesync.move_sync_api.domain.entity.Meta;
 

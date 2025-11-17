@@ -1,6 +1,6 @@
-package com.movesync.move_sync_api.infrastructure.repository;
+package com.movesync.move_sync_api.infrastructure.repository.meta;
 
-import com.movesync.move_sync_api.application.port.output.IMetaRepository;
+import com.movesync.move_sync_api.application.port.output.meta.IMetaRepository;
 import com.movesync.move_sync_api.domain.entity.Meta;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
