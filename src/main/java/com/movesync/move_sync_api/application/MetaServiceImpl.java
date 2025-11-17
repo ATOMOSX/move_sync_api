@@ -1,7 +1,11 @@
 package com.movesync.move_sync_api.application;
 
+import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.port.interactor.IMetaService;
-import com.movesync.move_sync_api.application.port.output.IMetaRepository;
+import com.movesync.move_sync_api.application.port.output.meta.IMetaRepository;
+import com.movesync.move_sync_api.application.port.output.meta.IReporteMetaRepository;
+import com.movesync.move_sync_api.application.port.output.meta.IReporteMetaRepositoryAdmin;
 import com.movesync.move_sync_api.domain.entity.Meta;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +17,12 @@ public class MetaServiceImpl implements IMetaService {
 
     @Autowired
     private IMetaRepository metaRepository;
+
+    @Autowired
+    private IReporteMetaRepository reporteMetaRepository;
+
+    @Autowired
+    private IReporteMetaRepositoryAdmin reporteMetaRepositoryAdmin;
 
     @Override
     public List<Meta> listarMetas() {
@@ -39,6 +49,16 @@ public class MetaServiceImpl implements IMetaService {
     @Override
     public void eliminarMeta(String idMeta) {
         metaRepository.deleteById(idMeta);
+    }
+
+    @Override
+    public List<MetaReporteDTO> obtenerReporteMetas(String idUsuario) {
+        return reporteMetaRepository.obtenerReporteMetas(Integer.valueOf(idUsuario));
+    }
+
+    @Override
+    public List<MetaReporteAdminDTO> obtenerReporteMetasAdmin() {
+        return reporteMetaRepositoryAdmin.obtenerReporteMetasAdmin();
     }
 
     private void validarMeta(Meta meta) {
