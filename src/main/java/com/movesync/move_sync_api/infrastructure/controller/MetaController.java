@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.infrastructure.controller;
 
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.meta.MetaRequestDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaResponseDTO;
 import com.movesync.move_sync_api.application.port.input.IMetaController;
@@ -73,5 +74,12 @@ public class MetaController implements IMetaController {
     public ResponseEntity<ApiResponse<List<MetaReporteDTO>>> obtenerReporte(@PathVariable String idUsuario) {
         List<MetaReporteDTO> reporte = metaService.obtenerReporteMetas(idUsuario);
         return ResponseEntity.ok(ApiResponse.success(Constants.META_REPORTE_GENERADO, reporte));
+    }
+
+    @Override
+    @GetMapping("/reporte/admin")
+    public ResponseEntity<ApiResponse<List<MetaReporteAdminDTO>>> obtenerReporteMetasAdmin() {
+        List<MetaReporteAdminDTO> reporte = metaService.obtenerReporteMetasAdmin();
+        return ResponseEntity.ok(ApiResponse.success(Constants.META_REPORTE_ADMIN_GENERADO, reporte));
     }
 }

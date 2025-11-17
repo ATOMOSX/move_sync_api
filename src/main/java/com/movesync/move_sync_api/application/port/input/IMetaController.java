@@ -2,6 +2,7 @@ package com.movesync.move_sync_api.application.port.input;
 
 import com.movesync.move_sync_api.application.dto.ApiResponse;
 import com.movesync.move_sync_api.application.dto.in.meta.MetaRequestDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaResponseDTO;
 import jakarta.validation.Valid;
@@ -18,4 +19,5 @@ public interface IMetaController {
     ResponseEntity<ApiResponse<MetaResponseDTO>> actualizarMeta(@PathVariable String id, @Valid @RequestBody MetaRequestDTO request);
     ResponseEntity<ApiResponse<Void>> eliminarMeta(@PathVariable String id);
     ResponseEntity<ApiResponse<List<MetaReporteDTO>>> obtenerReporte(@PathVariable String idUsuario);
+    ResponseEntity<ApiResponse<List<MetaReporteAdminDTO>>> obtenerReporteMetasAdmin();
 }

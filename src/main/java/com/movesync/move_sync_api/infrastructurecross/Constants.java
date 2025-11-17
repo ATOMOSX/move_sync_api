@@ -36,6 +36,7 @@ public class Constants {
     public static final String META_ACTUALIZADA = "Meta actualizada correctamente.";
     public static final String META_ELIMINADA = "Meta eliminada correctamente.";
     public static final String META_REPORTE_GENERADO = "Reporte de metas generado correctamente.";
+    public static final String META_REPORTE_ADMIN_GENERADO = "Reporte de metas para admin generado correctamente.";
 
     // Mensajeria endpoints - Logro
     public static final String LOGRO_OBTENIDOS = "Logros obtenidos correctamente.";
@@ -56,6 +57,9 @@ public class Constants {
 
     // Mensajeria endpoints - Registro de Actividad
     public static final String REGISTRO_ACTIVIDAD_OBTENIDOS = "Registros de actividad obtenidos correctamente.";
+
+    // Mensajeria endpoints - Actividad
+    public static final String RANKING_ACTIVIDADES_OBTENIDO = "Ranking de actividades obtenido correctamente.";
 
     // Mensajeria endpoints - Reportes
     public static final String REPORTE_GENERADO = "Reporte generado correctamente.";
