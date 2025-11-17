@@ -2,6 +2,8 @@ package com.movesync.move_sync_api.application.port.interactor;
 
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetasActivasVsFinalizadasDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.domain.entity.Meta;
 
 import java.util.List;
@@ -14,4 +16,5 @@ public interface IMetaService {
     void eliminarMeta(String idMeta);
     List<MetaReporteDTO> obtenerReporteMetas(String idUsuario);
     List<MetaReporteAdminDTO> obtenerReporteMetasAdmin();
+    ReporteResponseDTO<MetasActivasVsFinalizadasDTO> obtenerReporteMetasActivasVsFinalizadas(String idUsuario);
 }

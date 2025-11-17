@@ -5,6 +5,8 @@ import com.movesync.move_sync_api.application.dto.in.meta.MetaRequestDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaResponseDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetasActivasVsFinalizadasDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import com.movesync.move_sync_api.application.port.input.IMetaController;
 import com.movesync.move_sync_api.application.port.interactor.IMetaService;
 import com.movesync.move_sync_api.domain.entity.Meta;
@@ -14,6 +16,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 
 import java.util.List;
 
@@ -80,5 +83,16 @@ public class MetaController implements IMetaController {
     public ResponseEntity<ApiResponse<List<MetaReporteAdminDTO>>> obtenerReporteMetasAdmin() {
         List<MetaReporteAdminDTO> reporte = metaService.obtenerReporteMetasAdmin();
         return ResponseEntity.ok(ApiResponse.success(Constants.META_REPORTE_ADMIN_GENERADO, reporte));
+    }
+
+    /**
+     * Reporte Simple 3: Metas Activas vs Finalizadas de un Usuario
+     */
+    @Override
+    @GetMapping("/activas-vs-finalizadas/{idUsuario}")
+    public ResponseEntity<ApiResponse<ReporteResponseDTO<MetasActivasVsFinalizadasDTO>>> obtenerReporteMetasActivasVsFinalizadas(
+            @PathVariable String idUsuario) {
+        ReporteResponseDTO<MetasActivasVsFinalizadasDTO> reporte = metaService.obtenerReporteMetasActivasVsFinalizadas(idUsuario);
+        return ResponseEntity.ok(ApiResponse.success(Constants.REPORTE_GENERADO, reporte));
     }
 }
