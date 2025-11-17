@@ -5,11 +5,12 @@ import com.movesync.move_sync_api.application.dto.in.meta.MetaRequestDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteAdminDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaReporteDTO;
 import com.movesync.move_sync_api.application.dto.out.meta.MetaResponseDTO;
+import com.movesync.move_sync_api.application.dto.out.meta.MetasActivasVsFinalizadasDTO;
+import com.movesync.move_sync_api.application.dto.out.reporte.ReporteResponseDTO;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.List;
 
 public interface IMetaController {
@@ -20,4 +21,5 @@ public interface IMetaController {
     ResponseEntity<ApiResponse<Void>> eliminarMeta(@PathVariable String id);
     ResponseEntity<ApiResponse<List<MetaReporteDTO>>> obtenerReporte(@PathVariable String idUsuario);
     ResponseEntity<ApiResponse<List<MetaReporteAdminDTO>>> obtenerReporteMetasAdmin();
+    ResponseEntity<ApiResponse<ReporteResponseDTO<MetasActivasVsFinalizadasDTO>>> obtenerReporteMetasActivasVsFinalizadas(@PathVariable String idUsuario);
 }
