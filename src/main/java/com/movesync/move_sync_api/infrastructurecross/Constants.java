@@ -69,6 +69,7 @@ public class Constants {
     public static final String REPORTE_PDF_GENERADO = "PDF del reporte generado correctamente.";
     public static final String REPORTE_ERROR = "Error al generar el reporte.";
 
+
     // Errores
     public static final String ERROR_FORMATO_FECHA = "Formato de fecha inválido. Se espera dd/MM/yyyy";
     public static final String ERROR_FORMATO_FECHA_HORA = "Formato de fecha y hora inválido. Se espera dd/MM/yyyy HH:mm:ss";
