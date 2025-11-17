@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface ILogroRepository {
     List<Logro> findAll();
-    Logro findById(String idLogro);
+    Logro findById(Integer idLogro);
     List<Logro> findByUsuario(String idUsuario);
     void save(Logro logro);
     void update(Logro logro);

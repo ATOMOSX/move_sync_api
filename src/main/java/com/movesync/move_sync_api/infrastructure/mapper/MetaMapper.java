@@ -7,6 +7,7 @@ import com.movesync.move_sync_api.domain.entity.Meta;
 public class MetaMapper {
     public static Meta toEntity(MetaRequestDTO dto) {
         return Meta.builder()
+                .idUsuario(dto.getIdUsuario())
                 .fechaInicio(dto.getFechaInicio())
                 .fechaFin(dto.getFechaFin())
                 .objetivo(dto.getObjetivo())

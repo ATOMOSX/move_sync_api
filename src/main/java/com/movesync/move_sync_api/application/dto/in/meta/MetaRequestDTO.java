@@ -11,6 +11,7 @@ import java.time.LocalDate;
 @Data
 public class MetaRequestDTO {
 
+    private String idUsuario;
     @NotNull(message = "La fecha de inicio no puede estar vacía")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = Constants.DATA_PATTERN)
     private LocalDate fechaInicio;

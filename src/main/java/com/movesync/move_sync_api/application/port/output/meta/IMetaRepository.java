@@ -8,6 +8,6 @@ public interface IMetaRepository {
     List<Meta> findAll();
     Meta findById(String idMeta);
     void save(Meta meta);
-    void update(Meta meta);
+    void update(String idMeta, Meta meta);
     void deleteById(String idMeta);
 }

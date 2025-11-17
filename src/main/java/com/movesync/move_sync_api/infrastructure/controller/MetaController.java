@@ -56,8 +56,7 @@ public class MetaController implements IMetaController {
     public ResponseEntity<ApiResponse<MetaResponseDTO>> actualizarMeta(@PathVariable String id,
                                                                         @Valid @RequestBody MetaRequestDTO request) {
         Meta meta = MetaMapper.toEntity(request);
-        meta.setIdMeta(id);
-        metaService.actualizarMeta(meta);
+        metaService.actualizarMeta(id, meta);
         MetaResponseDTO response = MetaMapper.toResponse(meta);
         return ResponseEntity.ok(ApiResponse.success(Constants.META_ACTUALIZADA, response));
     }

@@ -5,6 +5,7 @@ import com.movesync.move_sync_api.application.port.output.IUsuarioRepository;
 import com.movesync.move_sync_api.domain.entity.Rol;
 import com.movesync.move_sync_api.domain.entity.Usuario;
 import com.movesync.move_sync_api.infrastructure.mapper.UsuarioReporteAvanzadoMapper;
+import com.movesync.move_sync_api.infrastructure.mapper.UsuarioRolMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -41,7 +42,7 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
         String sql = "SELECT * FROM usuario WHERE id_usuario = ?";
 
         try {
-            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), idUsuario);
+            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), Integer.parseInt(idUsuario));
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -61,19 +62,14 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
 
     @Override
     public void save(Usuario usuario) {
-        //Genera el id si no existe
-        if (usuario.getIdUsuario() == null || usuario.getIdUsuario().isBlank()) {
-            usuario.setIdUsuario(UUID.randomUUID().toString());
-        }
-
         String sql = """
-                INSERT INTO usuario
-                (id_usuario,primer_nombre, segundo_nombre, primer_apellido, segundo_apellido,
-                 cedula, peso, estatura, genero, contrasena, correo, fecha_nacimiento)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+            INSERT INTO usuario
+            (primer_nombre, segundo_nombre, primer_apellido, segundo_apellido,
+             cedula, peso, estatura, genero, contrasena, correo, fecha_nacimiento)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+
         jdbcTemplate.update(sql,
-                usuario.getIdUsuario(),
                 usuario.getPrimerNombre(),
                 usuario.getSegundoNombre(),
                 usuario.getPrimerApellido(),
@@ -84,19 +80,20 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
                 usuario.getGenero(),
                 usuario.getContrasena(),
                 usuario.getCorreo(),
-                Date.valueOf(usuario.getFechaNacimiento())
+                usuario.getFechaNacimiento() != null ? Date.valueOf(usuario.getFechaNacimiento()) : null
         );
     }
 
     @Override
     public void update(Usuario usuario) {
         String sql = """
-                UPDATE usuario
-                SET primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?,
-                    cedula = ?, peso = ?, estatura = ?, genero = ?, contrasena = ?, correo = ?,
-                    fecha_nacimiento = ?
-                WHERE id_usuario = ?
-                """;
+            UPDATE usuario
+            SET primer_nombre = ?, segundo_nombre = ?, primer_apellido = ?, segundo_apellido = ?,
+                cedula = ?, peso = ?, estatura = ?, genero = ?, contrasena = ?, correo = ?,
+                fecha_nacimiento = ?
+            WHERE id_usuario = ?
+            """;
+
         jdbcTemplate.update(sql,
                 usuario.getPrimerNombre(),
                 usuario.getSegundoNombre(),
@@ -108,8 +105,8 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
                 usuario.getGenero(),
                 usuario.getContrasena(),
                 usuario.getCorreo(),
-                Date.valueOf(usuario.getFechaNacimiento()),
-                usuario.getIdUsuario()
+                usuario.getFechaNacimiento() != null ? Date.valueOf(usuario.getFechaNacimiento()) : null,
+                Integer.parseInt(usuario.getIdUsuario())
         );
     }
 
@@ -140,7 +137,7 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
             """;
 
         try {
-            return jdbcTemplate.queryForObject(sql, new UsuarioRowMapper(), usuario, usuario, contrasena);
+            return jdbcTemplate.queryForObject(sql, new UsuarioRolMapper(), usuario, usuario, contrasena);
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -271,7 +268,6 @@ public class UsuarioRepositoryImpl implements IUsuarioRepository {
                     .correo(rs.getString("correo"))
                     .fechaNacimiento(rs.getDate("fecha_nacimiento").toLocalDate())
                     .idRol(rs.getString("id_rol"))
-                    .rolNombre(rs.getString("rol_nombre"))
                     .build();
         }
     }

@@ -41,9 +41,9 @@ public class MetaServiceImpl implements IMetaService {
     }
 
     @Override
-    public void actualizarMeta(Meta meta) {
+    public void actualizarMeta(String idMeta, Meta meta) {
         validarMeta(meta);
-        metaRepository.update(meta);
+        metaRepository.update(idMeta, meta);
     }
 
     @Override

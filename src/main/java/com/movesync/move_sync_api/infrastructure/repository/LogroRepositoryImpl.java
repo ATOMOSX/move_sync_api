@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.UUID;
 
 @Repository
 public class LogroRepositoryImpl implements ILogroRepository {
@@ -31,7 +30,7 @@ public class LogroRepositoryImpl implements ILogroRepository {
     }
 
     @Override
-    public Logro findById(String idLogro) {
+    public Logro findById(Integer idLogro) {
         String sql = "SELECT * FROM logro WHERE id_logro = ?";
         try {
             return jdbcTemplate.queryForObject(sql, new LogroRowMapper(), idLogro);
@@ -44,7 +43,7 @@ public class LogroRepositoryImpl implements ILogroRepository {
     public List<Logro> findByUsuario(String idUsuario) {
         String sql = "SELECT * FROM logro WHERE id_usuario = ? ORDER BY id_logro";
         try {
-            return jdbcTemplate.query(sql, new LogroRowMapper(), idUsuario);
+            return jdbcTemplate.query(sql, new LogroRowMapper(), Integer.parseInt(idUsuario));
         } catch (Exception e) {
             return List.of();
         }
@@ -52,23 +51,18 @@ public class LogroRepositoryImpl implements ILogroRepository {
 
     @Override
     public void save(Logro logro) {
-        //Genera el id si no existe
-        if (logro.getIdLogro() == null || logro.getIdLogro().isBlank()) {
-            logro.setIdLogro(UUID.randomUUID().toString());
-        }
-
         String sql = """
-                INSERT INTO logro
-                (id_logro, nombre,recompensa, descripcion, tipo, id_usuario)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """;
+            INSERT INTO logro
+            (nombre, recompensa, descripcion, tipo, id_usuario)
+            VALUES (?, ?, ?, ?, ?)
+            """;
+
         jdbcTemplate.update(sql,
-                logro.getIdLogro(),
                 logro.getNombre(),
                 logro.getRecompensa(),
                 logro.getDescripcion(),
                 logro.getTipo(),
-                logro.getIdUsuario()
+                Integer.parseInt(logro.getIdUsuario())
         );
     }
 
@@ -84,8 +78,8 @@ public class LogroRepositoryImpl implements ILogroRepository {
                 logro.getRecompensa(),
                 logro.getDescripcion(),
                 logro.getTipo(),
-                logro.getIdUsuario(),
-                logro.getIdLogro()
+                Integer.parseInt(logro.getIdUsuario()),
+                Integer.parseInt(logro.getIdLogro())
         );
     }
 

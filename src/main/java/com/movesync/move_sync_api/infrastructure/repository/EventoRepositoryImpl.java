@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class EventoRepositoryImpl implements IEventoRepository {
     public Evento findById(String idEvento) {
         String sql = "SELECT * FROM evento WHERE id_evento = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new EventoRowMapper(), idEvento);
+            return jdbcTemplate.queryForObject(sql, new EventoRowMapper(), Integer.parseInt(idEvento));
         } catch (Exception e) {
             return null;
         }
@@ -46,43 +47,44 @@ public class EventoRepositoryImpl implements IEventoRepository {
 
     @Override
     public void save(Evento evento) {
-        //Genera el id si no existe
-        if (evento.getIdEvento() == null || evento.getIdEvento().isBlank()) {
-            evento.setIdEvento(UUID.randomUUID().toString());
-        }
-
         String sql = """
                 INSERT INTO evento
-                (id_evento , duracion, fecha, nombre)
-                VALUES (?, ?, ?, ?)
+                (duracion, fecha, nombre, distancia)
+                VALUES (CAST(? AS interval), ?, ?, ?)
                 """;
+
+        String duracion = evento.getDuracion().toString();
+
         jdbcTemplate.update(sql,
-                evento.getIdEvento(),
-                Time.valueOf(evento.getDuracion()),
+                duracion,
                 Timestamp.valueOf(evento.getFecha()),
-                evento.getNombre()
+                evento.getNombre(),
+                evento.getDistancia()
         );
     }
 
     @Override
     public void update(Evento evento) {
         String sql = """
-                UPDATE evento
-                SET duracion = ?, fecha = ?, nombre = ?
+                            
+                    UPDATE evento
+                SET duracion = CAST(? AS interval), fecha = ?, nombre = ?, distancia = ?
                 WHERE id_evento = ?
                 """;
+
+        String duracion = evento.getDuracion().toString();
+
         jdbcTemplate.update(sql,
-                Time.valueOf(evento.getDuracion()),
+                duracion,
                 Timestamp.valueOf(evento.getFecha()),
                 evento.getNombre(),
-                evento.getIdEvento()
+                evento.getDistancia(),
+                Integer.parseInt(evento.getIdEvento())
         );
     }
 
     @Override
     public void deleteById(String idEvento) {
-        // Borrar filas hijas que referencian al usuario antes de eliminar el evento
-        jdbcTemplate.update("DELETE FROM calorias_estimadas WHERE id_evento = ?", idEvento);
         jdbcTemplate.update("DELETE FROM registro_participantes WHERE id_evento = ?", idEvento);
 
         String sql = "DELETE FROM evento WHERE id_evento = ?";

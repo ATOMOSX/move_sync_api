@@ -10,7 +10,7 @@ public interface IMetaService {
     List<Meta> listarMetas();
     Meta obtenerPorId(String idMeta);
     void registrarMeta(Meta meta);
-    void actualizarMeta(Meta meta);
+    void actualizarMeta(String idMeta, Meta meta);
     void eliminarMeta(String idMeta);
     List<MetaReporteDTO> obtenerReporteMetas(String idUsuario);
     List<MetaReporteAdminDTO> obtenerReporteMetasAdmin();

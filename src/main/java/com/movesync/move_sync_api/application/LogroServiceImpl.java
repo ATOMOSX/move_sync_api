@@ -21,7 +21,7 @@ public class LogroServiceImpl implements ILogroService {
 
     @Override
     public Logro obtenerPorId(String idLogro) {
-        return logroRepository.findById(idLogro);
+        return logroRepository.findById(Integer.valueOf(idLogro));
     }
 
     @Override

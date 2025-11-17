@@ -6,6 +6,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -35,7 +36,7 @@ public class MetaRepositoryImpl implements IMetaRepository {
     public Meta findById(String idMeta) {
         String sql = "SELECT * FROM meta WHERE id_meta = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new MetaRowMapper(), idMeta);
+            return jdbcTemplate.queryForObject(sql, new MetaRowMapper(), Integer.parseInt(idMeta));
         } catch (Exception e) {
             return null;
         }
@@ -43,38 +44,38 @@ public class MetaRepositoryImpl implements IMetaRepository {
 
     @Override
     public void save(Meta meta) {
-        //Genera el id si no existe
-        if (meta.getIdMeta() == null || meta.getIdMeta().isBlank()) {
-            meta.setIdMeta(UUID.randomUUID().toString());
-        }
 
         String sql = """
-                INSERT INTO meta
-                (id_meta, fecha_inicio, fecha_fin, objetivo, perdida_calorias_diarias)
-                VALUES (?, ?, ?, ?, ?)
+                UPDATE meta
+                SET id_usuario = ?, fecha_inicio = ?, fecha_fin = ?, objetivo = ?, perdida_calorias_diarias = ?
+                WHERE id_meta = ?
                 """;
+
         jdbcTemplate.update(sql,
-                meta.getIdMeta(),
-                Date.valueOf(meta.getFechaInicio()),
-                Date.valueOf(meta.getFechaFin()),
+                Integer.parseInt(meta.getIdUsuario()),
+                meta.getFechaInicio(),
+                meta.getFechaFin(),
                 meta.getObjetivo(),
-                meta.getPerdidaCaloriasDiarias()
+                meta.getPerdidaCaloriasDiarias(),
+                meta.getIdMeta()
         );
     }
 
     @Override
-    public void update(Meta meta) {
+    public void update(String idMeta, Meta meta) {
         String sql = """
                 UPDATE meta
-                SET fecha_inicio = ?, fecha_fin = ?, objetivo = ?, perdida_calorias_diarias = ?
+                SET id_usuario = ?, fecha_inicio = ?, fecha_fin = ?, objetivo = ?, perdida_calorias_diarias = ?
                 WHERE id_meta = ?
                 """;
+
         jdbcTemplate.update(sql,
-                Date.valueOf(meta.getFechaInicio()),
-                Date.valueOf(meta.getFechaFin()),
+                Integer.parseInt(meta.getIdUsuario()),
+                meta.getFechaInicio(),
+                meta.getFechaFin(),
                 meta.getObjetivo(),
-                meta.getPerdidaCaloriasDiarias(),
-                meta.getIdMeta()
+                new BigDecimal(meta.getPerdidaCaloriasDiarias()),
+                Integer.parseInt(idMeta)
         );
     }
 

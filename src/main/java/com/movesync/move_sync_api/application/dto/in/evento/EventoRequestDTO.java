@@ -21,4 +21,7 @@ public class EventoRequestDTO {
 
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
+
+    @NotNull(message = "La distancia no puede estar vacía")
+    private Double distancia;
 }

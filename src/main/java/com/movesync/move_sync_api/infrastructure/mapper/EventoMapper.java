@@ -10,6 +10,7 @@ public class EventoMapper {
                 .duracion(dto.getDuracion())
                 .fecha(dto.getFecha())
                 .nombre(dto.getNombre())
+                .distancia(dto.getDistancia())
                 .build();
     }
 
