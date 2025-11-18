@@ -7,14 +7,12 @@ import com.movesync.move_sync_api.application.port.interactor.IReporteActividadS
 import com.movesync.move_sync_api.infrastructurecross.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/reporte-actividad")
 public class ReporteActividadController implements IReporteActividadController {
 
